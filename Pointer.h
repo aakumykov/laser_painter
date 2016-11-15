@@ -13,14 +13,27 @@ class Pointer
     }
     
     void init(){
-        Msg::debug("Pointer.init()");
+      Msg::debug("---------------- Pointer.init() start ----------------");
+      
       this->laser.init();
+      delay(100);
+      
       this->dac.init();
+      delay(100);
+      
       this->goTo(this->currentX, this->currentY);
+      delay(100);
+      
+      for (byte i=0; i<3; i++){
+        this->laser.on(); delay(300); 
+        this->laser.off(); delay(300);
+      }
+
+      Msg::debug("---------------- Pointer.init() finish ----------------");
     }
     
     void drawLine(int x1, int y1, int x2, int y2){
-      Msg::debug("Pointer.drawLine("+String(x1)+","+String(y1)+","+String(x2)+","+String(y2)+")");
+        Msg::debug("Pointer.drawLine("+String(x1)+","+String(y1)+","+String(x2)+","+String(y2)+")");
       this->goTo(x1,y1);
       this->lineTo(x2,y2);
     }
@@ -40,32 +53,46 @@ class Pointer
     int currentX, currentY;
     
     void goTo(int x, int y){
-        Msg::debug("Pointer.goTo("+String(x)+","+String(y)+")");
-      int timeout = round(distanceTo(x,y) / POINTER_SPEED);
+      Msg::debug("Pointer.goTo("+String(x)+","+String(y)+")");
+      
+      double timeout = round(distanceTo(x,y) / POINTER_SPEED);
         Msg::debug("goTo timeout: "+String(timeout));
+
+      this->currentX = x;
+      this->currentY = y;
+      
       this->laser.off();
       this->dac.write(x,y);
-      delayMicroseconds(timeout);
+      delay(timeout);
     }
     
     void lineTo(int x, int y){
-        Msg::debug("Pointer.lineTo("+String(x)+","+String(y)+")");
-      int timeout = round(distanceTo(x,y) / POINTER_SPEED);
+      Msg::debug("Pointer.lineTo("+String(x)+","+String(y)+")");
+      
+      double timeout = round(distanceTo(x,y) / POINTER_SPEED);
         Msg::debug("lineTo timeout: "+String(timeout));
+
+      this->currentX = x;
+      this->currentY = y;
+      
       this->laser.on();
       this->dac.write(x,y);
-      delayMicroseconds(timeout);
+      delay(timeout);
       this->laser.off();
     }
     
     float distance(int x1, int y1, int x2, int y2){
-        Msg::debug("Pointer.distance("+String(x1)+","+String(y1)+","+String(x2)+","+String(y2)+")");
-      return sqrt( (x2-x1)^2 + (y2-y1)^2 );
+      Msg::debug("Pointer.distance("+String(x1)+","+String(y1)+","+String(x2)+","+String(y2)+")");
+      float dist = sqrt( pow((x2-x1),2) + pow((y2-y1),2) );
+        //Msg::debug("distance="+String(dist));
+      return dist;
     }
     float distanceTo(int x, int y){
-        Msg::debug("Pointer.distanceTo("+String(x)+","+String(y)+")");
       // дублирование кода ради ускорения выполнения
-      return sqrt( (x - this->currentX)^2 + (y - this->currentY)^2 );
+      Msg::debug("Pointer.distanceTo("+String(x)+","+String(y)+")");
+      float dist = sqrt( pow((x - this->currentX),2) + pow((y - this->currentY),2) );
+        //Msg::debug("distance="+String(dist));
+      return dist;
     }
 
 };

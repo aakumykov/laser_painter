@@ -5,7 +5,7 @@
 #define SCREEN_RESOLUTION_Y 2048
 #define POINTER_START_X 0
 #define POINTER_START_Y 0
-#define POINTER_SPEED 1 //точек (каких?) в микромекунду. Нужно калибровать или подбирать...
+#define POINTER_SPEED 50 //точек (каких?) в микромекунду. Нужно калибровать или подбирать...
 
 #include "Pointer.h"
 
@@ -17,5 +17,6 @@ void setup() {
 }
 
 void loop() {
-
+  pointer.drawLine(0,0,0,1000);
+  //delay(1000);
 }
