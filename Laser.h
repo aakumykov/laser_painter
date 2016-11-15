@@ -1,6 +1,7 @@
 class Laser {
   public:
     void init(){
+        Serial.writeln("Laser.init()");
       pinMode(LASER_PIN, OUTPUT);
     }
     void on(){

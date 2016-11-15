@@ -7,6 +7,7 @@ class DoubleDAC
 {
   public:
     void init(){
+        Serial.writeln("DoubleDAC.init()");
       this->dac1.begin(DAC1_ADDR);
       this->dac2.begin(DAC2_ADDR);
     }

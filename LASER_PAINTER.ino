@@ -5,13 +5,14 @@
 #define SCREEN_RESOLUTION_Y 2048
 #define POINTER_START_X 0
 #define POINTER_START_Y 0
-#define POINTER_SPEED 16384 //точек (чего?) в секудну. Нужно калибровать или подбирать...
+#define POINTER_SPEED 1 //точек (каких?) в микромекунду. Нужно калибровать или подбирать...
 
 #include "Pointer.h"
 
 Pointer pointer;
 
 void setup() {
+  Serial.begin(230400);
   pointer.init();
 }
 
