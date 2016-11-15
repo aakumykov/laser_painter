@@ -8,15 +8,15 @@ class DoubleDAC
   public:
     void init(){
       this->dac1.begin(DAC1_ADDR);
-      this->dac1.begin(DAC2_ADDR);
+      this->dac2.begin(DAC2_ADDR);
     }
     void write(int x, int y){
       this->dac1.setVoltage(x*this->stepX, false);
       this->dac2.setVoltage(y*this->stepY, false);
     }
   private:
-    static const Adafruit_MCP4725 dac1;
-    static const Adafruit_MCP4725 dac2;
+    Adafruit_MCP4725 dac1;
+    Adafruit_MCP4725 dac2;
     static const float stepX = DAC_RESOLUTION_X / SCREEN_RESOLUTION_X;
     static const float stepY = DAC_RESOLUTION_Y / SCREEN_RESOLUTION_Y;
 };

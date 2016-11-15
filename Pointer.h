@@ -5,14 +5,16 @@ class Pointer
 {
   public:
     Pointer(){
-      this->currentX = this->startX;
-      this->currentY = this->startY;
+      this->currentX = POINTER_START_X;
+      this->currentY = POINTER_START_Y;
+    }
+    void init(){
+      this->laser.init();
+      this->dac.init();
     }
   private:
-    static const Laser laser;
-    static const DoubleDAC dac;
+    Laser laser;
+    DoubleDAC dac;
     int currentX, currentY;
-    static const int startX = POINTER_START_X;
-    static const int startY = POINTER_START_Y;
 };
 
