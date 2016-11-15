@@ -15,7 +15,10 @@ class Pointer
       this->goTo(this->currentX, this->currentY);
     }
     void goTo(int x, int y){
-      
+      int timeout = round(POINTER_SPEED / distanceTo(x,y));
+      this->laser.off();
+      this->dac.write(x,y);
+      delay(timeout);
     }
   private:
     Laser laser;
