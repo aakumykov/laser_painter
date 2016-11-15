@@ -1,3 +1,4 @@
+#include "Msg.h"
 #include "Laser.h"
 #include "DoubleDAC.h"
 #include <math.h>
@@ -6,38 +7,52 @@ class Pointer
 {
   public:
     Pointer(){
+        Msg::debug("Pointer()");
       this->currentX = POINTER_START_X;
       this->currentY = POINTER_START_Y;
     }
     void init(){
-        Serial.writeln("Pointer.init()");
+        Msg::debug("Pointer.init()");
       this->laser.init();
       this->dac.init();
       this->goTo(this->currentX, this->currentY);
     }
     void goTo(int x, int y){
+        Msg::debug("Pointer.goTo("+String(x)+","+String(y)+")");
       int timeout = round(distanceTo(x,y) / POINTER_SPEED);
-        Serial.writeln("lineTo timeout: "+String(timeout));
+        Msg::debug("goTo timeout: "+String(timeout));
       this->laser.off();
       this->dac.write(x,y);
       delayMicroseconds(timeout);
     }
     void lineTo(int x, int y){
+        Msg::debug("Pointer.lineTo("+String(x)+","+String(y)+")");
       int timeout = round(distanceTo(x,y) / POINTER_SPEED);
-        Serial.writeln("lineTo timeout: "+String(timeout));
+        Msg::debug("lineTo timeout: "+String(timeout));
       this->laser.on();
-      this.dac.write(x,y);
+      this->dac.write(x,y);
       delayMicroseconds(timeout);
       this->laser.off();
+    }
+  
+    void drawLine(int x1, int y1, int x2, int y2){
+      Msg::debug("Pointer.drawLine("+String(x1)+","+String(y1)+","+String(x2)+","+String(y2)+")");
+      
+    }
+    void drawPoint(int x, int y){
+      Msg::debug("Pointer.drawPoint("+String(x)+","+String(y)+")");
+      
     }
   private:
     Laser laser;
     DoubleDAC dac;
     int currentX, currentY;
     float distance(int x1, int y1, int x2, int y2){
+        Msg::debug("Pointer.distance("+String(x1)+","+String(y1)+","+String(x2)+","+String(y2)+")");
       return sqrt( (x2-x1)^2 + (y2-y1)^2 );
     }
     float distanceTo(int x, int y){
+        Msg::debug("Pointer.distanceTo("+String(x)+","+String(y)+")");
       // дублирование кода ради ускорения выполнения
       return sqrt( (x - this->currentX)^2 + (y - this->currentY)^2 );
     }

@@ -7,11 +7,12 @@ class DoubleDAC
 {
   public:
     void init(){
-        Serial.writeln("DoubleDAC.init()");
+        Msg::debug("DoubleDAC.init()");
       this->dac1.begin(DAC1_ADDR);
       this->dac2.begin(DAC2_ADDR);
     }
     void write(int x, int y){
+        Msg::debug("DoubleDAC.write("+String(x)+","+String(y)+")");
       this->dac1.setVoltage(x*this->stepX, false);
       this->dac2.setVoltage(y*this->stepY, false);
     }
